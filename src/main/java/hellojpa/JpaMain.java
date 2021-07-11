@@ -8,6 +8,7 @@ import javax.persistence.Persistence;
 public class JpaMain {
 
 	public static void main(String[] args) {
+		// 정하는 예뻐요~s2!
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2");
 		
 		EntityManager em = emf.createEntityManager();
