@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>jpa-basic</groupId>
-  <artifactId>ex1-hello-jpa</artifactId>
+  <groupId>jpabook</groupId>
+  <artifactId>jpashop</artifactId>
   <version>1.0.0</version>
-  <name>kyh</name>
-  <description>start jpa!!</description>
+  <name>jh</name>
+  <description>jpashop</description>
   
   <dependencies>
   	<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
