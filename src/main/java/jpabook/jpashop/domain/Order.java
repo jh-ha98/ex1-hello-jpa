@@ -13,11 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "ORDERS")
-public class Order {
+public class Order extends BaseEntity {
 
 	@Id
 	@GeneratedValue
@@ -36,6 +37,10 @@ public class Order {
 
 	private LocalDateTime orderDate; // ORDER_DATE, 부트: order_date
 
+	@OneToOne
+	@JoinColumn(name = "DELIVERY_ID")
+	private Delivery delivery;
+	
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 
