@@ -1,5 +1,6 @@
 package hellojpa;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,7 +12,36 @@ public class JpaMain {
 
 	public static void main(String[] args) {
 //		runTeamAndMember();
-		runExtendPractice();
+//		runExtendPractice();
+		runSuperClass();
+	}
+
+	public static void runSuperClass() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2");
+
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+
+		tx.begin();
+		try {
+			Member member = new Member();
+			member.setCreatedBy("kim");
+			member.setCreatedDate(LocalDateTime.now());
+			member.setUsername("user1");
+			
+			em.persist(member);
+			
+			em.flush();
+			em.clear();
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+
+		emf.close();
 	}
 
 	public static void runExtendPractice() {
