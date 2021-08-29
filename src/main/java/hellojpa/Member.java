@@ -2,6 +2,7 @@ package hellojpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,7 +21,13 @@ public class Member extends BaseEntity{
 	// @Column(name = "TEAM_ID")
 	// private Long teamId;
 	
-	@ManyToOne
+	// FetchType.LAZY: 지연 로딩, member 클래스만 DB에서 조회
+	// @ManyToOne(fetch = FetchType.LAZY)
+
+	// FetchType.EAGER: 즉시 로딩, team과 member 조인해서 한번에 조회
+	// @ManyToOne(fetch = FetchType.EAGER)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TEAM_ID")
 	private Team team;
 

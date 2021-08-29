@@ -16,7 +16,9 @@ public class JpaMain {
 		// runTeamAndMember();
 		// runExtendPractice();
 		// runSuperClass();
-		runProxy();
+		// runProxy();
+		// runLazy();		/*지연로딩*/
+		runEager();			/*즉시로딩*/
 	}
 
 	public static void runProxy() {
@@ -32,7 +34,7 @@ public class JpaMain {
 			// chapter2(em);
 			// chapter3(em);
 			// chapter4(em);
-			chapter5(em, emf);
+			// chapter5(em, emf);
 
 			tx.commit();
 		} catch (Exception e) {
@@ -237,6 +239,93 @@ public class JpaMain {
 				System.out.println("m = " + m.getUsername());
 			}
 			System.out.println("====================");
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+
+		emf.close();
+	}
+
+	public static void runLazy() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2");
+
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+
+		tx.begin();
+		try {
+			Team team = new Team();
+			team.setName("teamA");
+			em.persist(team);
+
+			Member member1 = new Member();
+			member1.setUsername("hello1");
+			member1.setTeam(team);
+			em.persist(member1);
+
+			em.flush();
+			em.clear();
+
+			Member m = em.find(Member.class, member1.getId());
+
+			// m.getTeam().getClass() : 프록시
+			// 지연로딩 세팅 시 연관된 것을 프록시로 가지고 옴
+			System.out.println("m = " + m.getTeam().getClass());
+
+			System.out.println("==============================");
+			//실제 팀의 속성을 사용하는 시점에 프록시 객체가 초기화 되면서 DB에서 값 추출
+			m.getTeam().getName();
+			System.out.println("==============================");
+
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+
+		emf.close();
+	}
+
+	public static void runEager() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2");
+
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+
+		tx.begin();
+		try {
+			Team team = new Team();
+			team.setName("teamA");
+			em.persist(team);
+
+			Member member1 = new Member();
+			member1.setUsername("hello1");
+			member1.setTeam(team);
+			em.persist(member1);
+
+			em.flush();
+			em.clear();
+
+			// Member m = em.find(Member.class, member1.getId());
+
+			// m.getTeam().getClass() : team
+			// 실제 team을 조회해서 프록시 필요 없음
+			// System.out.println("m = " + m.getTeam().getClass());
+
+			// System.out.println("==============================");
+			// System.out.println("teamName = " + m.getTeam().getName()); 
+			// System.out.println("==============================");
+
+			// JPQL 예시 (member, team 따로 select)
+			// SQL : select * from Member
+			/* sql로 번역되어 team을 조회한 다음 EAGER로 설정되어 있으면 member 개수 만큼 EAGER를 가지고 오기 위해 쿼리 별도 출력 */
+			// SQL : select * from Team where TEAM_ID = xxx
+			List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class).getResultList();
 
 			tx.commit();
 		} catch (Exception e) {
