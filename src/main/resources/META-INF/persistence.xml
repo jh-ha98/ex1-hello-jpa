@@ -3,8 +3,8 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-	
-	<!-- database 구분 -->
+
+  <!-- database 구분 -->
 	<persistence-unit name="h2">
 		<properties>
 			<!-- 필수 속성 -->
@@ -23,5 +23,30 @@
 			<property name="hibernate.hbm2ddl.auto" value="create" /> 
 		</properties>
 	</persistence-unit>
-	
+
+  <!-- 데이터베스 종류가 여러개일 경우 구분하기위한 이름: hello -->
+  <persistence-unit name="mariaDB">
+    <properties>
+      <!-- 필수 속성 -->
+      <!-- 디비 커넥션 정보 -->
+      <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+      <property name="javax.persistence.jdbc.user" value="synergy" />
+      <property name="javax.persistence.jdbc.password" value="synergy1!" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://localhost:21400/jpa_test" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" />
+
+      <!-- 옵션 -->
+      <!-- 하이버네트를 쓸때 각종 옵션 property를 잘 읽어보자 -->
+      <property name="hibernate.show_sql" value="true" />
+      <property name="hibernate.format_sql" value="true" />
+      <property name="hibernate.use_sql_comments" value="true" />
+      <!-- 스키마 자동 생성 -->
+      <!-- create: 기존 테이블 삭제후 다시 생성 -->
+      <!-- create-drop: create와 같으나 종료시 drop -->
+      <!-- update: 변경분만 반영 -->
+      <!-- validate: 정상 매핑되었는지 확인 -->
+      <!-- none: 사용하지 않음 -->
+      <property name="hibernate.hbm2ddl.auto" value="create" />
+    </properties>
+  </persistence-unit>
 </persistence> 
